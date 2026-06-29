@@ -72,3 +72,4 @@ urllib3==2.7.0
 uvicorn==0.48.0
 Werkzeug==3.1.8
 wrapt==2.2.1
+tf-keras==2.21.0

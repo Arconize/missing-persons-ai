@@ -1,110 +1,120 @@
+# 🔍 FindMe — Missing Persons AI System v2.0
 
-# 🔍 FindMe - Missing Persons AI System 
-A modern, web-based system designed to help reunite missing persons with their families using advanced AI face recognition and hybrid metadata filtering.
+A full-featured, web-based system to help reunite missing persons with their families.
+Built with FastAPI + React, featuring AI face recognition, role-based access control, and a complete admin panel.
 
-![Arch Linux](https://img.shields.io/badge/OS-Arch%20Linux-1793D1?logo=arch-linux)
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi)
-![React](https://img.shields.io/badge/React-Frontend-61DAFB?logo=react)
+![FastAPI](https://img.shields.io/badge/FastAPI-2.0-009688?logo=fastapi)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)
+![Arch Linux](https://img.shields.io/badge/OS-Arch%20Linux-1793D1?logo=arch-linux)
 
 ---
 
-## 🌟 Features
+## ✨ Features (v2.0)
 
-- **AI Face Recognition:** Upload a photo, and the system uses DeepFace (VGG-Face model) to scan the database for facial matches.
-- **Hybrid Search:** Combine AI face matching with traditional filters (Age, Height, National ID, Location) for precise results.
-- **Contact and Location Info:** Provides clear contact details and last seen locations to help families reconnect quickly.
-- **Dark UI and Glassmorphism:** Beautiful, responsive RTL (Persian) interface with animated backgrounds and glass-effect components.
-- **Fast and Lightweight:** Built with FastAPI for high-performance backend operations.
+| # | Feature | Description |
+|---|---------|-------------|
+| P.3.1 | **Auth & User Management** | Register/login with hashed passwords, session tokens (7-day expiry), JWT-style Bearer auth |
+| P.3.2 / P.4.2 | **Submission Form** | Upload photo + detailed fields (age, height, national code, location, contact info) — requires login |
+| P.3.3 / P.4.3 | **Search & Filtering** | Metadata filters (name, status, age range, location, national code) + AI face-match endpoint |
+| P.4.1 | **Showcase / Display** | Paginated card grid with status filter, full detail pages, click-to-expand |
+| P.3.4 | **Admin Control Panel** | Stats dashboard, pending approval queue, approve/reject reports, user management |
+| P.2.4 / P.5.2 | **Security (RBAC)** | Role-based access (user/admin), SHA-256 hashing, random image filenames, temp file cleanup |
+| P.6.2 | **Documentation** | In-app docs page (user guide + admin guide + API reference + security architecture) |
 
 ---
 
 ## 🛠️ Tech Stack
 
-**Backend:**
-- Python 3.11
-- FastAPI
-- SQLAlchemy (SQLite)
-- DeepFace (VGG-Face)
-
-**Frontend:**
-- React (Vite)
-- Axios
-- CSS3 (Animations, Grid, Glassmorphism)
+**Backend:** Python 3.11 · FastAPI · SQLAlchemy (SQLite) · DeepFace (VGG-Face) · Uvicorn  
+**Frontend:** React 19 (Vite) · CSS3 Glassmorphism · RTL Layout · Fetch API
 
 ---
 
-## 🤖 AI Tools and Models Disclosure
+## 🚀 Running Locally
 
-In the development of this project, Artificial Intelligence was utilized in two distinct ways:
-
-1. **Core System Feature (Machine Learning):** 
-   The face recognition engine is powered by **DeepFace**, specifically utilizing the **VGG-Face** model architecture for facial embedding and similarity matching.
-
-2. **Development Assistance (Generative AI):** 
-   **Claude 3.5 Sonnet** (by Anthropic) and **GPT-4o** (by OpenAI) were used as pair-programming assistants for code generation, debugging, architectural design, and writing project documentation.
-
----
-
-## 🚀 How to Run Locally
-
-### Prerequisites
-
-- Python 3.11+ (Highly recommended to use Conda or venv due to TensorFlow dependencies)
-- Node.js and npm
-
-### 1. Backend Setup
-
-Open a terminal and run the following commands:
+### Backend
 
 ```bash
 cd backend
-python -m venv venv --without-pip
-source venv/bin/activate
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python get-pip.py
-rm get-pip.py
-
+python -m venv venv
+source venv/bin/activate          # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 TF_CPP_MIN_LOG_LEVEL=3 uvicorn main:app --reload
 ```
-The backend will run on `http://127.0.0.1:8000`
 
-### 2. Frontend Setup
+Backend runs at: `http://127.0.0.1:8000`  
+Swagger UI:      `http://127.0.0.1:8000/docs`
 
-Open a new terminal and run the following commands:
+### Frontend
 
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-The frontend will run on `http://localhost:5173`
+
+Frontend runs at: `http://localhost:5173`
+
+---
+
+## 🔐 Default Admin Credentials
+
+| Field    | Value       |
+|----------|-------------|
+| Username | `admin`     |
+| Password | `admin1234` |
+
+> ⚠️ Change the default password immediately in production.
 
 ---
 
 ## 📁 Project Structure
 
-```text
-missing-persons-system/
+```
+missing-persons-ai/
 ├── backend/
-│   ├── main.py            # FastAPI application and AI logic
-│   ├── requirements.txt   # Python dependencies
-│   └── images/            # Stored faces (Gitignored)
+│   ├── main.py              # FastAPI app: Auth, RBAC, Persons, Admin endpoints
+│   ├── requirements.txt
+│   └── images/              # Uploaded images (gitignored)
 ├── frontend/
 │   ├── src/
-│   │   ├── App.jsx        # Main React component
-│   │   └── App.css        # Styles and animations
+│   │   ├── App.jsx          # Root router with Navbar
+│   │   ├── App.css          # Global styles (glassmorphism + RTL)
+│   │   ├── AuthContext.jsx  # Auth state (login/register/logout)
+│   │   ├── api.js           # Central API helper
+│   │   └── pages/
+│   │       ├── HomePage.jsx     # Landing page with stats
+│   │       ├── AuthPage.jsx     # Login & Registration (P.3.1)
+│   │       ├── SubmitPage.jsx   # Report submission form (P.3.2)
+│   │       ├── ShowcasePage.jsx # Grid display of all cases (P.4.1)
+│   │       ├── DetailPage.jsx   # Full detail view of a case
+│   │       ├── SearchPage.jsx   # Metadata + AI face search (P.3.3)
+│   │       ├── AdminPage.jsx    # Admin control panel (P.3.4)
+│   │       └── DocsPage.jsx     # User & tech documentation (P.6.2)
 │   └── package.json
-├── .gitignore
 └── README.md
 ```
 
 ---
 
-## 📜 License
+## 🔒 Security Architecture
 
-This project is open-source and available under the MIT License.
+- **Passwords:** SHA-256 hashed before storage
+- **Sessions:** 256-bit random tokens, 7-day TTL, stored in DB
+- **RBAC:** Two roles — `user` (submit + search) and `admin` (full access)
+- **File Safety:** Random hex filenames prevent path guessing; temp files deleted immediately
+- **Approval Flow:** All submissions are held pending until an admin approves them
 
 ---
-Built with ❤️ to help communities.
+
+## 📜 AI Tools Disclosure
+
+1. **Core Feature:** DeepFace (VGG-Face) for facial embedding & similarity matching  
+2. **Development:** Claude Sonnet (Anthropic) for code generation and architecture design
+
+---
+
+## 📜 License
+
+MIT — open-source, built to help communities.
