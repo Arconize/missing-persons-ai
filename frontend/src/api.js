@@ -1,5 +1,5 @@
 // Central API helper
-const BASE = 'http://127.0.0.1:8000';
+const BASE = 'https://missing-persons-ai-frontend.onrender.com/';
 
 function headers(extra = {}) {
   const token = localStorage.getItem('token');
