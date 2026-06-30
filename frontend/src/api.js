@@ -1,5 +1,5 @@
 // Central API helper
-const BASE = 'https://missing-persons-ai-frontend.onrender.com/';
+const BASE = 'https://missing-persons-ai-backend.onrender.com';
 
 function headers(extra = {}) {
   const token = localStorage.getItem('token');
