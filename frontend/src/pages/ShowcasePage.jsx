@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api';
 
-const IMG = 'https://whocareswashere-missing-persons-ai-backend.hf.space';
+const IMG = 'https://whocareswashere-missing-persons-ai-backend.hf.space/';
 
 export default function ShowcasePage({ setPage, setDetailId }) {
   const [data, setData]     = useState({ results: [], total: 0, pages: 1 });
