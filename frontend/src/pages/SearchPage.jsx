@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { api } from '../api';
 
-const IMG = 'https://whocareswashere-missing-persons-ai-backend.hf.space';
+const IMG = 'https://whocareswashere-missing-persons-ai-backend.hf.space/';
 
 export default function SearchPage({ setPage, setDetailId }) {
   const [tab, setTab]         = useState('meta');  // meta | face
