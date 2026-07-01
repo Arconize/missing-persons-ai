@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api';
 
-const IMG = 'http://127.0.0.1:8000/';
+const IMG = 'https://whocareswashere-missing-persons-ai-backend.hf.space';
 
 export default function DetailPage({ personId, setPage }) {
   const [p, setP]         = useState(null);
