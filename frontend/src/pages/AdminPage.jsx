@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { api } from '../api';
 import { useAuth } from '../AuthContext';
 
-const IMG = 'https://whocareswashere-missing-persons-ai-backend.hf.space';
+const IMG = 'https://whocareswashere-missing-persons-ai-backend.hf.space/';
 
 export default function AdminPage({ setPage }) {
   const { user } = useAuth();
