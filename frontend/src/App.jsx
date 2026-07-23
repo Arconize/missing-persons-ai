@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { AuthProvider, useAuth } from './AuthContext';
-import HomePage     from './pages/HomePage';
-import AuthPage     from './pages/AuthPage';
-import SubmitPage   from './pages/SubmitPage';
-import ShowcasePage from './pages/ShowcasePage';
-import DetailPage   from './pages/DetailPage';
-import SearchPage   from './pages/SearchPage';
-import AdminPage    from './pages/AdminPage';
-import DocsPage     from './pages/DocsPage';
+import HomePage         from './pages/HomePage';
+import AuthPage         from './pages/AuthPage';
+import SubmitPage       from './pages/SubmitPage';
+import ShowcasePage     from './pages/ShowcasePage';
+import DetailPage       from './pages/DetailPage';
+import SearchPage       from './pages/SearchPage';
+import AdminPage        from './pages/AdminPage';
+import DocsPage         from './pages/DocsPage';
+import ConfirmFoundPage from './pages/ConfirmFoundPage';
 import './App.css';
 
 function AppInner() {
@@ -19,11 +20,12 @@ function AppInner() {
   const nav = (p) => { setPage(p); setMenu(false); };
 
   const navItems = [
-    { key: 'home',     label: '🏠 خانه' },
-    { key: 'showcase', label: '👥 پرونده‌ها' },
-    { key: 'search',   label: '🔍 جستجو' },
-    { key: 'submit',   label: '📋 ثبت گزارش' },
-    { key: 'docs',     label: '📚 راهنما' },
+    { key: 'home',          label: '🏠 خانه' },
+    { key: 'showcase',      label: '👥 پرونده‌ها' },
+    { key: 'search',        label: '🔍 جستجو' },
+    { key: 'submit',        label: '📋 ثبت گزارش' },
+    ...(user ? [{ key: 'confirm-found', label: '🔔 تأیید پیدا شدن' }] : []),
+    { key: 'docs',          label: '📚 راهنما' },
     ...(user?.role === 'admin' ? [{ key: 'admin', label: '🛡️ مدیریت' }] : []),
   ];
 
@@ -77,19 +79,20 @@ function AppInner() {
 
       {/* ── Page router ── */}
       <main className="main-content">
-        {page === 'home'     && <HomePage     setPage={nav} />}
-        {page === 'auth'     && <AuthPage     setPage={nav} />}
-        {page === 'submit'   && <SubmitPage   setPage={nav} />}
-        {page === 'showcase' && <ShowcasePage setPage={nav} setDetailId={setDetailId} />}
-        {page === 'detail'   && <DetailPage   personId={detailId} setPage={nav} />}
-        {page === 'search'   && <SearchPage   setPage={nav} setDetailId={setDetailId} />}
-        {page === 'admin'    && <AdminPage    setPage={nav} />}
-        {page === 'docs'     && <DocsPage />}
+        {page === 'home'          && <HomePage         setPage={nav} />}
+        {page === 'auth'          && <AuthPage         setPage={nav} />}
+        {page === 'submit'        && <SubmitPage       setPage={nav} />}
+        {page === 'showcase'      && <ShowcasePage     setPage={nav} setDetailId={setDetailId} />}
+        {page === 'detail'        && <DetailPage       personId={detailId} setPage={nav} />}
+        {page === 'search'        && <SearchPage       setPage={nav} setDetailId={setDetailId} />}
+        {page === 'confirm-found' && <ConfirmFoundPage setPage={nav} />}
+        {page === 'admin'         && <AdminPage        setPage={nav} />}
+        {page === 'docs'          && <DocsPage />}
       </main>
 
       <footer className="footer glass">
-        <p>© ۱۴۰۵ سامانه هوشمند جستجوی افراد گمشده — FindMe v2.0</p>
-        <p>ساخته‌شده با ❤️ برای کمک به جامعه</p>
+        <p>© ۱۴۰۵ سامانه هوشمند جستجوی افراد گمشده — نسخه آزمایشی</p>
+        <p>این سایت در حال توسعه است</p>
       </footer>
     </div>
   );

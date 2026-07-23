@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import { api } from '../api';
+import MarkFoundModal from '../components/MarkFoundModal';
 
 const IMG = 'http://127.0.0.1:8000/';
 
 export default function SearchPage({ setPage, setDetailId }) {
-  const [tab, setTab]         = useState('meta');  // meta | face
+  const [tab, setTab]         = useState('meta');
   const [filters, setFilters] = useState({ name:'', status:'', age_min:'', age_max:'', last_location:'', national_code:'', height:'' });
   const [faceImg, setFaceImg] = useState(null);
   const [faceFilters, setFF]  = useState({ age:'', height:'', national_code:'', last_location:'' });
   const [results, setResults] = useState(null);
   const [msg, setMsg]         = useState('');
   const [loading, setL]       = useState(false);
+
+  // mark-found modal state
+  const [modalPerson, setModalPerson] = useState(null);
 
   const handleMeta = async (e) => {
     e.preventDefault();
@@ -42,8 +46,26 @@ export default function SearchPage({ setPage, setDetailId }) {
 
   const openDetail = (id) => { setDetailId(id); setPage('detail'); };
 
+  // Called when modal confirms — update the card locally without re-fetching
+  const handleFoundSuccess = (name) => {
+    setModalPerson(null);
+    setResults(prev => prev.map(p =>
+      p.id === modalPerson.id ? { ...p, status: 'found' } : p
+    ));
+    setMsg(`✅ وضعیت ${name} به «پیدا شده» تغییر کرد`);
+  };
+
   return (
     <div className="page-content fade-in">
+      {/* Mark-found modal */}
+      {modalPerson && (
+        <MarkFoundModal
+          person={modalPerson}
+          onClose={() => setModalPerson(null)}
+          onSuccess={handleFoundSuccess}
+        />
+      )}
+
       <div className="form-card glass wide-card">
         <h2>🔍 جستجوی پیشرفته</h2>
 
@@ -156,13 +178,17 @@ export default function SearchPage({ setPage, setDetailId }) {
             {results.length === 0 ? (
               <div className="empty-state">هیچ نتیجه‌ای یافت نشد</div>
             ) : results.map(p => (
-              <div key={p.id} className="result-card glass" onClick={() => openDetail(p.id)} style={{cursor:'pointer'}}>
-                <div className="result-img-wrapper">
+              <div key={p.id} className="result-card glass">
+                {/* Clickable image area → detail */}
+                <div className="result-img-wrapper" onClick={() => openDetail(p.id)} style={{cursor:'pointer'}}>
                   <img src={IMG + p.image_path} alt={p.name}
                     onError={e => { e.target.src='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%231e293b" width="100" height="100"/><text y="55" x="50" text-anchor="middle" font-size="40">👤</text></svg>'; }} />
                 </div>
                 <div className="result-info">
-                  <h3>{p.name} <span className={`status-badge ${p.status}`}>{p.status==='missing'?'گمشده':'پیدا شده'}</span></h3>
+                  <h3 onClick={() => openDetail(p.id)} style={{cursor:'pointer'}}>
+                    {p.name}
+                    <span className={`status-badge ${p.status}`}>{p.status==='missing'?'گمشده':'پیدا شده'}</span>
+                  </h3>
                   <div className="info-grid">
                     <p><strong>سن:</strong> {p.age||'نامشخص'}</p>
                     <p><strong>قد:</strong> {p.height||'نامشخص'}</p>
@@ -175,6 +201,16 @@ export default function SearchPage({ setPage, setDetailId }) {
                       <strong>📞 اطلاعات تماس:</strong>
                       <span>{p.contact_info}</span>
                     </div>
+                  )}
+
+                  {/* ── Mark-found button ── only shows for missing records */}
+                  {p.status === 'missing' && (
+                    <button
+                      className="btn-found-report"
+                      onClick={() => setModalPerson(p)}
+                    >
+                      🟢 این فرد پیدا شد
+                    </button>
                   )}
                 </div>
               </div>
