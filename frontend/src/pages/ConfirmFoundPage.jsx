@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { api } from '../api';
 import { useAuth } from '../AuthContext';
 
-const IMG = 'http://127.0.0.1:8000/';
+const IMG = 'https://whocareswashere-missing-persons-ai-backend.hf.space/';
 
 const FR_STATUS = {
   pending:   { label: '⏳ در انتظار بررسی',  cls: 'fr-pending'   },
