@@ -1,5 +1,5 @@
 // Central API helper — FindMe v2.2
-const BASE = 'http://127.0.0.1:8000';
+const BASE = 'https://whocareswashere-missing-persons-ai-backend.hf.space';
 
 function headers(extra = {}) {
   const token = localStorage.getItem('token');
