@@ -82,11 +82,6 @@ export default function AuthPage({ setPage }) {
 
         {msg && <p className="message">{msg}</p>}
 
-        {mode === 'login' && (
-          <div className="auth-hint glass">
-            <p>🛡️ مدیر پیش‌فرض: <strong>admin</strong> / رمز: <strong>admin1234</strong></p>
-          </div>
-        )}
       </div>
     </div>
   );
